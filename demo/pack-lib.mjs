@@ -44,7 +44,10 @@ export function buildZip(entries) {
   const chunks = []
   const central = []
   let offset = 0
-  const stamp = dosTime(new Date())
+  // Fixed timestamp: a rebuild of unchanged sources must produce the same
+  // bytes, otherwise every release ships a new sha256 for the same pack and
+  // the digest chain (release asset digest → ledger → install) breaks.
+  const stamp = dosTime(new Date(Date.UTC(2020, 0, 1, 0, 0, 0)))
 
   for (const entry of entries) {
     const name = Buffer.from(entry.name, 'utf8')

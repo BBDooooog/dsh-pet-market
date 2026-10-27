@@ -171,8 +171,13 @@ test('installer commits a local package and registers it with the host', async (
   assert.equal(installed[0].activeVersion, '1.2.0')
   assert.ok(readFileSync(join(installed[0].versions[0].dir, 'pet.json')).length > 0)
 
-  assert.deepEqual(host.calls.map((call) => call[0]), ['register', 'activate'])
+  // Installing stocks the shelf; the animal only appears once it is asked for.
+  assert.deepEqual(host.calls.map((call) => call[0]), ['register'], JSON.stringify(host.calls.map((c) => c[0])))
+  assert.equal(installed[0].active, false, 'a fresh install stays home')
   assert.ok(events.some(([type]) => type === 'job.done'))
+
+  await installer.activate('pixel-cat')
+  assert.deepEqual(host.calls.map((call) => call[0]), ['register', 'activate'], JSON.stringify(host.calls.map((c) => c[0])))
 
   const removed = await installer.uninstall('pixel-cat')
   assert.equal(removed.petId, 'pixel-cat')
@@ -332,7 +337,7 @@ test('upload import installs a dragged package', async () => {
     }
     assert.equal(job.phase, 'done', JSON.stringify(job))
     assert.equal(store.list()[0].petId, 'pixel-cat')
-    assert.deepEqual(host.calls.map((call) => call[0]), ['register', 'activate'])
+    assert.deepEqual(host.calls.map((call) => call[0]), ['register'], JSON.stringify(host.calls.map((c) => c[0])))
   })
 })
 

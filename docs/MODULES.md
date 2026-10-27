@@ -204,6 +204,7 @@ interface EventPort { emit(e: MarketEvent): void }
 | 生命周期 | 画家写 `<root>/stage/stage.pid`（`{pid, owner}`）；宿主启动时 `cleanupStale()` 只杀「owner 已不在」的旧画家（`process.kill(pid,0)` 探活），并用 `<root>/stage/stage.lock`（`FileShare.None`）保证同一数据根只有一个画家，抢不到锁的进程写 `stage skipped …: another painter holds the lock` 后 exit 0；画家每 10 s 检查 owner 进程，宿主没了就退出；画家意外退出时宿主按 `min(30s, 1.5s × attempts)` 重启，存活超过 10 s 才重置计数 |
 | 生效检查 | `GET /petmarket/api/health` 与 `/catalog` 的 `desktop` 字段：`{ available, engine: 'electron'|'wpf', reason, pid, pets, attachedAt }`；`reason` 取值 `running`/`exited`/`spawn-failed`/`state-write-failed`/`port-unavailable`/`script-missing`/`powershell-missing`/`platform-unsupported`/`disabled`/`disposed` |
 | 关闭开关 | `config.desktop === false`；`config.displayIndex` 目前只用于 Electron 分支 |
+| 装完是否出场 | `config.activateOnInstall` 默认 `false`：`install` 只登记 `active=false` 的素材，桌面画家不建窗口，用户点「出来玩」才 `activate`。设为 `true` 恢复「装完即出场」 |
 
 沙箱约束：画家进程跑在系统 PowerShell 里，用绝对路径读图集；它只能通过 HTTP（带 token）回报位置，不碰 ledger。
 
