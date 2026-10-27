@@ -1,0 +1,28 @@
+name: release-packs
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  packs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Build demo packs
+        run: |
+          node demo/build-demo-pack.mjs
+          node demo/build-dog-pack.mjs
+      - name: Verify
+        run: node test/run.mjs
+      - name: Attach packs to the release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            demo/dist/*.dsppet
+            demo/dist/*.sha256
+          generate_release_notes: true
