@@ -951,6 +951,9 @@ test('wpf stage: builds desktop payload and spawns one painter process', async (
     logger: null,
     pluginRoot: repoRoot,
     getPort: () => 54438,
+    platform: 'win32',
+    powershellPath: 'powershell.exe',
+    fileExists: () => true,
     spawn: (file, args, options) => {
       calls.push([file, args, options])
       return fakeChild
@@ -960,7 +963,7 @@ test('wpf stage: builds desktop payload and spawns one painter process', async (
   assert.equal(attached.available, true, 'the wpf stage starts when powershell exists')
   const spawnCall = calls.find((entry) => Array.isArray(entry[1]))
   assert.ok(spawnCall, 'a painter process is spawned')
-  assert.match(spawnCall[0], /powershell\.exe$/i)
+  assert.match(spawnCall[0], /powershell(\.exe)?$/i)
   const command = spawnCall[1].join(' ')
   assert.match(command, /-State/)
   assert.match(command, /-Port 54438/)
@@ -1009,6 +1012,9 @@ test('wpf stage: a painter that quits is respawned with backoff', async () => {
       logger: null,
       pluginRoot: repoRoot,
       getPort: () => 54438,
+      platform: 'win32',
+      powershellPath: 'powershell.exe',
+      fileExists: () => true,
       spawn: () => {
         spawns += 1
         return child
