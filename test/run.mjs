@@ -14,6 +14,7 @@ import { extractAll, openZip } from '../lib/zip.js'
 import { validatePack } from '../lib/pack.js'
 import { parseSource, describeSource } from '../lib/sources.js'
 import { planGithubDownload } from '../lib/github.js'
+import { authHeadersFor } from '../lib/download.js'
 import { openStore } from '../lib/ledger.js'
 import { createInstaller } from '../lib/install.js'
 import { createRouter } from '../lib/router.js'
@@ -93,8 +94,29 @@ test('source parsing covers every accepted shape', () => {
   const local = parseSource('local:D:/packs/pet.dsppet')
   assert.equal(local.kind, 'local')
   assert.equal(describeSource(local).label.includes('pet.dsppet'), true)
+  // A repo that ships several pets in one release: pick one by asset name.
+  const hinted = parseSource('octo/pets#dog-1.1.0.dsppet')
+  assert.equal(hinted.asset, 'dog-1.1.0.dsppet')
+  assert.equal(hinted.sourceRef, 'github:octo/pets#dog-1.1.0.dsppet')
+  assert.equal(parseSource('octo/pets@v2.0.0#dog-1.1.0.dsppet').asset, 'dog-1.1.0.dsppet')
   assert.throws(() => parseSource(''), (err) => err.code === 'source-invalid')
   assert.throws(() => parseSource('https://example.com/whatever'), (err) => err.code === 'source-invalid')
+})
+
+test('a GitHub token rides along to api.github.com only', () => {
+  const before = process.env.GITHUB_TOKEN
+  process.env.GITHUB_TOKEN = 'ghp_test_token'
+  try {
+    const api = authHeadersFor('https://api.github.com/repos/o/r/releases/latest')
+    assert.equal(api.authorization, 'Bearer ghp_test_token')
+    const asset = authHeadersFor('https://objects.githubusercontent.com/blob?sig=abc')
+    assert.equal(asset.authorization, undefined, 'a pre-signed asset URL never sees the token')
+    const release = authHeadersFor('https://github.com/o/r/releases/download/v1/pet.dsppet')
+    assert.equal(release.authorization, undefined)
+  } finally {
+    if (before === undefined) delete process.env.GITHUB_TOKEN
+    else process.env.GITHUB_TOKEN = before
+  }
 })
 
 test('direct release asset plans without touching the API', async () => {

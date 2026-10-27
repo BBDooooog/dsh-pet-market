@@ -55,7 +55,7 @@ pnpm --dir "$HOME/.dsh/profiles/desktop" install
 | 已经下好的包 | 把 `.dsppet` / `.zip` 拖进面板，或点一下选文件 | 本地读取 → 校验 → 登记 |
 | 正在开发的目录 | `local:D:/packs/pixel-cat` | 读目录 → 校验 → 登记（作者自测用） |
 
-装进市场 ≠ 上桌面：`带一只回家` 只登记素材，`出来玩` 才画窗口。想回到「装完直接出场」，把 `config.activateOnInstall` 设成 `true`。
+一个 release 带多只宠物时，用 `owner/repo#pixel-cat-1.2.0.dsppet` 指定装哪一只；给 DSH 配好环境变量 `GITHUB_TOKEN` 后，API 限额从 60 次/小时升到 5000 次/小时（token 只发给 `api.github.com`，资产走预签名链接时不带）。`n`n装进市场 ≠ 上桌面：`带一只回家` 只登记素材，`出来玩` 才画窗口。想回到「装完直接出场」，把 `config.activateOnInstall` 设成 `true`。
 
 ## 桌面上的宠物会做什么
 

@@ -260,3 +260,8 @@ GitHub 自 2025-06 起在 release 资产上暴露 `digest` 字段（[changelog](
 4. 解包全部落在 `tmp/<jobId>/`，校验通过才 `rename` 到 `packs/`；跨目录只走 `FsPort`。
 5. 素材响应固定 `Content-Type` 白名单 + `nosniff`，SVG 只以 `<img>` 形态使用。
 6. token 只在 Host 半使用；日志、错误、ledger、SSE 载荷都不出现明文。
+
+
+## 认证与限额
+
+owner/repo 走 GitHub REST 时，进程环境里存在 GITHUB_TOKEN（或 GH_TOKEN）就会带上 Authorization: Bearer，限额从 60 次/小时升到 5000 次/小时；该头只发给 pi.github.com，预签名的资产下载地址与 github.com/.../releases/download/... 都不带。owner/repo#asset 用来在一个 release 里指定具体资产。
