@@ -98,6 +98,9 @@ test('source parsing covers every accepted shape', () => {
   const hinted = parseSource('octo/pets#dog-1.1.0.dsppet')
   assert.equal(hinted.asset, 'dog-1.1.0.dsppet')
   assert.equal(hinted.sourceRef, 'github:octo/pets#dog-1.1.0.dsppet')
+  // The installer feeds sourceRef back into parseSource, github: prefix included.
+  assert.equal(parseSource('github:octo/pets').sourceRef, 'github:octo/pets')
+  assert.equal(parseSource('github:octo/pets@v2#dog-1.1.0.dsppet').asset, 'dog-1.1.0.dsppet')
   assert.equal(parseSource('octo/pets@v2.0.0#dog-1.1.0.dsppet').asset, 'dog-1.1.0.dsppet')
   assert.throws(() => parseSource(''), (err) => err.code === 'source-invalid')
   assert.throws(() => parseSource('https://example.com/whatever'), (err) => err.code === 'source-invalid')
