@@ -26,12 +26,12 @@
 一行装好（需要 `pnpm` 在 PATH 里，`npm i -g pnpm` 一行搞定）：
 
 ```bash
-dsh plugin --profile desktop add github:BBDooooog/dsh-pet-market#v0.1.4
+dsh plugin --profile desktop add github:BBDooooog/dsh-pet-market#v0.1.5
 ```
 
 然后**完全退出 DSH 再启动**（Host 半只在启动时挂载）。这条命令做完三件事：把插件写进 profile 的 `dependencies`、加进 `dsh.profile.bundles`、装好 `node_modules`。
 
-想跟着 `main` 的最新提交走，去掉 `#v0.1.4`：`dsh plugin --profile desktop add github:BBDooooog/dsh-pet-market`。
+想跟着 `main` 的最新提交走，去掉 `#v0.1.5`：`dsh plugin --profile desktop add github:BBDooooog/dsh-pet-market`。
 
 改代码调试用 `link:`：
 
@@ -219,3 +219,4 @@ flowchart LR
 ---
 
 **给同路人**：桌宠不该是「每只宠物一个独立程序」。宠物是数据，运行时是平台的，市场是管道。这个仓库就是那条管道的第一个实现。
+
