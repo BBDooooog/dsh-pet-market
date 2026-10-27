@@ -139,7 +139,7 @@ dsh-pet-market/
 | 宠物 | 包 | 体积 | sha256 |
 | --- | --- | --- | --- |
 | <img src="demo/packs/pixel-cat/thumbnail.png" width="40"> Pixel Cat（黑猫警长） | `pixel-cat-1.2.0.dsppet` | 5886 B | `653fd273f4409cb565dfcae98ed97095a786b9b850859a09055919aa618db202` |
-| <img src="demo/packs/yellow-dog/thumbnail.png" width="40"> Yellow Dog | `yellow-dog-1.1.0.dsppet` | 6324 B | `0ed64f5aca2f60357092147b2e327709cdf1aeda83ff1d9aae181e933986b942` |
+| <img src="demo/packs/yellow-dog/thumbnail.png" width="40"> Yellow Dog | `yellow-dog-1.1.0.dsppet` | 6200 B | `eaa376de55bcaa7c505e8c50510ce98def97cf8095d5743634b6dddba756a57d` |
 
 猫的素材是 [OpenGameArt 的 Cat sprites（Shepardskin，CC0 1.0）](https://opengameart.org/content/cat-sprites)，重新切成图集并补了 `renderer.front`；黄狗是用 Pillow 画出来的（二十行像素，随仓库授权）。`demo/packs/yellow-dog-2/` 留作多宠共存测试，不发布。
 
