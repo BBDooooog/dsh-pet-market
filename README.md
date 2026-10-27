@@ -23,18 +23,22 @@
 
 ## 三分钟上手
 
+一行装好（需要 `pnpm` 在 PATH 里，`npm i -g pnpm` 一行搞定）：
+
 ```bash
-# 1. 拿到插件
+dsh plugin --profile desktop add github:BBDooooog/dsh-pet-market#v0.1.4
+```
+
+然后**完全退出 DSH 再启动**（Host 半只在启动时挂载）。这条命令做完三件事：把插件写进 profile 的 `dependencies`、加进 `dsh.profile.bundles`、装好 `node_modules`。
+
+想跟着 `main` 的最新提交走，去掉 `#v0.1.4`：`dsh plugin --profile desktop add github:BBDooooog/dsh-pet-market`。
+
+改代码调试用 `link:`：
+
+```bash
 git clone https://github.com/BBDooooog/dsh-pet-market.git
-cd dsh-pet-market
-
-# 2. 接进当前 DSH profile（一次性；把 <ABS_PATH> 换成仓库绝对路径）
-node -e "const fs=require('node:fs');const p=process.argv[1];const j=JSON.parse(fs.readFileSync(p,'utf8'));j.dependencies['dsh-pet-market']='link:'+process.argv[2];if(!j.dsh.profile.bundles.includes('dsh-pet-market'))j.dsh.profile.bundles.push('dsh-pet-market');fs.writeFileSync(p,JSON.stringify(j,null,2)+'\n')" "$HOME/.dsh/profiles/desktop/package.json" "<ABS_PATH>"
-
-# 3. 装依赖（pnpm 不在 PATH 时用 DSH 自带那份）
-pnpm --dir "$HOME/.dsh/profiles/desktop" install
-
-# 4. 完全退出 DSH 再启动（Host 半只在启动时挂载）
+dsh plugin --profile desktop add link:D:/AI/dsh/dsh-pet-market
+dsh plugin --profile desktop install
 ```
 
 重启后：
@@ -55,7 +59,9 @@ pnpm --dir "$HOME/.dsh/profiles/desktop" install
 | 已经下好的包 | 把 `.dsppet` / `.zip` 拖进面板，或点一下选文件 | 本地读取 → 校验 → 登记 |
 | 正在开发的目录 | `local:D:/packs/pixel-cat` | 读目录 → 校验 → 登记（作者自测用） |
 
-一个 release 带多只宠物时，用 `owner/repo#pixel-cat-1.2.0.dsppet` 指定装哪一只；给 DSH 配好环境变量 `GITHUB_TOKEN` 后，API 限额从 60 次/小时升到 5000 次/小时（token 只发给 `api.github.com`，资产走预签名链接时不带）。`n`n装进市场 ≠ 上桌面：`带一只回家` 只登记素材，`出来玩` 才画窗口。想回到「装完直接出场」，把 `config.activateOnInstall` 设成 `true`。
+一个 release 带多只宠物时，用 `owner/repo#pixel-cat-1.2.0.dsppet` 指定装哪一只；给 DSH 配好环境变量 `GITHUB_TOKEN` 后，API 限额从 60 次/小时升到 5000 次/小时（token 只发给 `api.github.com`，资产走预签名链接时不带）。
+
+装进市场 ≠ 上桌面：`带一只回家` 只登记素材，`出来玩` 才画窗口。想回到「装完直接出场」，把 `config.activateOnInstall` 设成 `true`。
 
 ## 桌面上的宠物会做什么
 
