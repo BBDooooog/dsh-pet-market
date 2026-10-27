@@ -1,0 +1,6 @@
+# Keep every text file byte-identical between a Windows checkout and CI: pet
+# packs are hashed, so a CRLF checkout must not change the archive bytes.
+* text=auto eol=lf
+*.png binary
+*.dsppet binary
+*.zip binary
