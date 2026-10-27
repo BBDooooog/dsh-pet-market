@@ -138,8 +138,8 @@ dsh-pet-market/
 
 | 宠物 | 包 | 体积 | sha256 |
 | --- | --- | --- | --- |
-| <img src="demo/packs/pixel-cat/thumbnail.png" width="40"> Pixel Cat（黑猫警长） | `pixel-cat-1.2.0.dsppet` | 4350 B | `41414b2e983f923c1c782aee839ba9a8c8d6e9fb9ba118b412ca130035670f8d` |
-| <img src="demo/packs/yellow-dog/thumbnail.png" width="40"> Yellow Dog | `yellow-dog-1.1.0.dsppet` | 4304 B | `462c0aa8251909f76fed92b088b635352eb29556a105558cabadabf3ba02ed9a` |
+| <img src="demo/packs/pixel-cat/thumbnail.png" width="40"> Pixel Cat（黑猫警长） | `pixel-cat-1.2.0.dsppet` | 5886 B | `653fd273f4409cb565dfcae98ed97095a786b9b850859a09055919aa618db202` |
+| <img src="demo/packs/yellow-dog/thumbnail.png" width="40"> Yellow Dog | `yellow-dog-1.1.0.dsppet` | 6324 B | `0ed64f5aca2f60357092147b2e327709cdf1aeda83ff1d9aae181e933986b942` |
 
 猫的素材是 [OpenGameArt 的 Cat sprites（Shepardskin，CC0 1.0）](https://opengameart.org/content/cat-sprites)，重新切成图集并补了 `renderer.front`；黄狗是用 Pillow 画出来的（二十行像素，随仓库授权）。`demo/packs/yellow-dog-2/` 留作多宠共存测试，不发布。
 
@@ -151,7 +151,7 @@ node demo/build-dog-pack.mjs           # 黄狗目录 → .dsppet
 node test/run.mjs                      # 23 项测试
 ```
 
-打包时间戳固定为 `2020-01-01`，所以同样的源目录**每次打出的 sha256 完全一致**——release 的 digest、台账、安装时的比对才能串成一条链。
+打包采用**固定 UTC 时间戳（2020-01-01）+ 不压缩存储**：同样源目录在任何机器、任何 Node 版本、任何时区打出来的 sha256 完全一致（CI 与本机逐字节相同）——release 的 digest、台账、安装时的比对才能串成一条链。
 
 ## 架构
 

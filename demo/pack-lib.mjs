@@ -35,8 +35,10 @@ export function walk(dir, base = dir, out = []) {
 }
 
 function dosTime(date) {
-  const time = (date.getHours() << 11) | (date.getMinutes() << 5) | Math.floor(date.getSeconds() / 2)
-  const day = ((date.getFullYear() - 1980) << 9) | ((date.getMonth() + 1) << 5) | date.getDate()
+  // UTC fields on purpose: reading local fields makes the archive bytes depend
+  // on the build machine's timezone, and CI runs in UTC.
+  const time = (date.getUTCHours() << 11) | (date.getUTCMinutes() << 5) | Math.floor(date.getUTCSeconds() / 2)
+  const day = ((date.getUTCFullYear() - 1980) << 9) | ((date.getUTCMonth() + 1) << 5) | date.getUTCDate()
   return { time, day }
 }
 
@@ -52,10 +54,11 @@ export function buildZip(entries) {
   for (const entry of entries) {
     const name = Buffer.from(entry.name, 'utf8')
     const data = entry.data
-    const deflated = deflateRawSync(data, { level: 9 })
-    const useDeflate = deflated.length < data.length
-    const body = useDeflate ? deflated : data
-    const method = useDeflate ? 8 : 0
+    // Stored (method 0) on purpose: deflate output differs between zlib builds,
+    // so a compressed archive hashes differently on CI and on a dev box. Packs
+    // are a few KB; identical bytes are worth more than a few saved bytes.
+    const body = data
+    const method = 0
     const crc = crc32(data)
 
     const local = Buffer.alloc(30)
