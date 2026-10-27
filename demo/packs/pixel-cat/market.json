@@ -1,0 +1,11 @@
+{
+  "schema": 1,
+  "petId": "pixel-cat",
+  "version": "1.2.0",
+  "tags": ["cat", "pixel", "cc0", "demo"],
+  "changelog": "1.1.0 — faster idle/walk/run cycles so the cat reads as moving instead of stepping. 1.0.0 — first packaging of the CC0 cat sprites into sprite-sequence/v1.",
+  "contact": {
+    "author": "Shepardskin",
+    "url": "https://opengameart.org/content/cat-sprites"
+  }
+}

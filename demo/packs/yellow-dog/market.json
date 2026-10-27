@@ -1,0 +1,16 @@
+{
+  "schema": 1,
+  "petId": "yellow-dog",
+  "version": "1.1.0",
+  "tags": [
+    "dog",
+    "yellow",
+    "pixel",
+    "demo"
+  ],
+  "changelog": "1.0.0 — first packaging of the generated yellow dog into sprite-sequence/v1.",
+  "contact": {
+    "url": "https://github.com/dsh-pets/dsh-pet-market",
+    "author": "dsh-pet-market"
+  }
+}

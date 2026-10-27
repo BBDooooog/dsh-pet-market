@@ -1,0 +1,4 @@
+- insert:
+    - id: petmarket
+      name: dsh-pet-market
+      config: {}

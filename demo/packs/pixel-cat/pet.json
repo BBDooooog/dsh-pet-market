@@ -1,0 +1,46 @@
+{
+  "schema": 1,
+  "id": "pixel-cat",
+  "version": "1.2.0",
+  "name": "Pixel Cat",
+  "description": "A four-colour cat that naps, strolls, and sprints across your desktop.",
+  "author": "Shepardskin (art, CC0) · packaged by dsh-pet-market",
+  "license": "CC0-1.0",
+  "homepage": "https://opengameart.org/content/cat-sprites",
+  "engines": {
+    "petRuntime": "^1"
+  },
+  "renderer": {
+    "type": "sprite",
+    "front": "left",
+    "mode": "sheet",
+    "image": "animations/cat.png",
+    "frame": { "w": 40, "h": 34 },
+    "grid": { "margin": 0, "spacing": 0 },
+    "animations": {
+      "idle": { "row": 0, "from": 0, "frames": 2, "fps": 6, "loop": true },
+      "walk": { "row": 1, "from": 0, "frames": 6, "fps": 10, "loop": true },
+      "run": { "row": 2, "from": 0, "frames": 6, "fps": 14, "loop": false, "next": "idle" }
+    },
+    "states": {
+      "idle": "idle",
+      "walk": "walk",
+      "happy": "run"
+    }
+  },
+  "anchor": { "x": 0.5, "y": 1 },
+  "bubble": {
+    "enabled": true,
+    "maxWidth": 220
+  },
+  "menus": [
+    { "id": "nap", "label": "打个盹", "kind": "action", "action": "pose:idle" },
+    { "id": "stroll", "label": "散个步", "kind": "action", "action": "pose:walk" },
+    { "id": "source", "label": "素材来源", "kind": "url", "url": "https://opengameart.org/content/cat-sprites" }
+  ],
+  "reactions": {
+    "agent.state": { "thinking": "walk", "idle": "idle" },
+    "tool.start": { "pose": "walk" },
+    "tool.end": { "pose": "idle" }
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "name": "dsh-pet-market",
+  "version": "0.1.0",
+  "description": "Desktop pet market for DeepSeek Harness: install pet packs from a GitHub link or a dropped .dsppet file, verify them, and run them on the desktop.",
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "exports": {
+    ".": "./index.js",
+    "./client": "./client.js",
+    "./icon": "./icon.svg"
+  },
+  "files": [
+    "index.js",
+    "client.js",
+    "lib",
+    "stage",
+    "cordis.patch.yml",
+    "icon.svg",
+    "README.md",
+    "docs"
+  ],
+  "scripts": {
+    "test": "node test/run.mjs",
+    "demo": "node demo/build-demo-pack.mjs"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "immediately": true,
+      "inject": []
+    }
+  }
+}

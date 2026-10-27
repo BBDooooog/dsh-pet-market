@@ -1,0 +1,13 @@
+{
+  "schema": 1,
+  "petId": "pixel-cat",
+  "version": "1.2.0",
+  "profile": "sprite-sequence/v1",
+  "name": "Pixel Cat",
+  "description": "CC0 pixel cat with idle / walk / run cycles.",
+  "author": "Shepardskin (art, CC0) · packaged by dsh-pet-market",
+  "license": "CC0-1.0",
+  "engines": {
+    "petRuntime": "^1"
+  }
+}

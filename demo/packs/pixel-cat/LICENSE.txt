@@ -1,0 +1,12 @@
+Pixel Cat — art by Shepardskin
+=================================
+
+Source: https://opengameart.org/content/cat-sprites
+License: CC0 1.0 Universal (public domain dedication)
+         https://creativecommons.org/publicdomain/zero/1.0/
+
+The original pack ships GIF animations. For this demo the frames were extracted,
+re-composed into one 6x3 atlas (40x34 per frame) and repacked as a
+sprite-sequence/v1 pet package. Repack script: demo/tools/build-assets.py
+
+No attribution is required by the license; it is kept here because credit is nice.
