@@ -326,11 +326,22 @@ function Set-PetGeometry($pet, $window) {
   $window.Top = [double]$pet.y - $labelH
 }
 
+function Resolve-Pose([object]$pet, [string]$pose) {
+  # Poses are what the pack says a state means ("happy"); animations are what the
+  # sheet actually has ("run"). Accept either, prefer the animation name.
+  if (-not $pose) { return $null }
+  if ($pet.animations -and $pet.animations.ContainsKey($pose)) { return $pose }
+  $mapped = $null
+  if ($pet.states) { $mapped = [string]$pet.states.($pose) }
+  if ($mapped -and $pet.animations -and $pet.animations.ContainsKey($mapped)) { return $mapped }
+  return $null
+}
+
 function Set-Pose($pet, [string]$pose) {
-  if (-not $pose) { return }
-  if (-not $pet.animations -or -not $pet.animations.ContainsKey($pose)) { return }
-  $pet.poseName = $pose
-  $pet.poseApplied = $pose
+  $target = Resolve-Pose $pet $pose
+  if (-not $target) { return }
+  $pet.poseName = $target
+  $pet.poseApplied = $target
   $pet.index = 0
   $pet.elapsed = 0.0
 }
@@ -522,12 +533,15 @@ function New-PetWindow($pet) {
         Set-Pose $pet 'happy'
         # A click should look like the pet noticed you and scampered off, so the
         # window travels a short distance instead of running on the spot.
+        $pet.dashPose = Resolve-Pose $pet 'happy'
+        $pet.dashStartedAt = [DateTime]::UtcNow
         $pet.dashDir = if ((Get-Random -Minimum 0 -Maximum 2) -eq 0) { -1 } else { 1 }
         $pet.dashTargetX = [double]$sender.Left + ($pet.dashDir * (Get-Random -Minimum 140 -Maximum 230))
         $pet.dashing = $true
         $pet.facing = $pet.dashDir
         # Hold the last frame long enough to read, short enough not to look frozen.
         $pet.holdUntil = [DateTime]::UtcNow.AddMilliseconds(240)
+        Write-StageLog ('dash ' + $pet.petId + ': pose=' + [string]$pet.dashPose)
       }
       $pet.moved = $false
     } catch {
@@ -629,6 +643,8 @@ function ConvertFrom-State($raw) {
       dashing     = $false
       dashDir     = 1
       dashTargetX = $startX
+      dashPose    = $null
+      dashStartedAt = [DateTime]::MinValue
       dragging    = $false
       moved       = $false
       dragStart   = [System.Drawing.Point]::new(0, 0)
@@ -803,6 +819,14 @@ function Update-Wander($pet, $window, [int]$deltaMs) {
   $now = [DateTime]::UtcNow
   if ($pet.dashing) {
     # A click sends the pet a short hop away; travel beats running in place.
+    # The run clip may be loop:false, so keep re-arming it for the length of the
+    # dash instead of letting it fall back to idle mid-air.
+    if ($pet.dashPose -and $pet.poseName -ne $pet.dashPose) {
+      $pet.poseName = $pet.dashPose
+      $pet.poseApplied = $pet.dashPose
+      $pet.index = 0
+      $pet.elapsed = 0.0
+    }
     $step = ($deltaMs / 1000.0) * 260
     $left = [double]$window.Left
     $target = [double]$pet.dashTargetX
@@ -818,8 +842,10 @@ function Update-Wander($pet, $window, [int]$deltaMs) {
     if ($left + $window.Width -gt ($bounds.Left + $bounds.Width)) { $left = $bounds.Left + $bounds.Width - $window.Width }
     $window.Left = $left
     $pet.x = $left
-    if ([Math]::Abs($left - $target) -lt 1) {
+    $dashTooLong = ((($now - $pet.dashStartedAt).TotalMilliseconds) -gt 1400)
+    if (([Math]::Abs($left - $target) -lt 1) -or $dashTooLong) {
       $pet.dashing = $false
+      $pet.dashPose = $null
       $pet.poseName = 'idle'
       $pet.poseApplied = 'idle'
       $pet.index = 0

@@ -1,6 +1,6 @@
 {
   "name": "dsh-pet-market",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "Desktop pet market for DeepSeek Harness: install pet packs from a GitHub link or a dropped .dsppet file, verify them, and run them on the desktop.",
   "license": "MIT",
   "type": "module",

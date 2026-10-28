@@ -26,12 +26,12 @@
 一行装好（需要 `pnpm` 在 PATH 里，`npm i -g pnpm` 一行搞定）：
 
 ```bash
-dsh plugin --profile desktop add github:BBDooooog/dsh-pet-market#v0.1.5
+dsh plugin --profile desktop add github:BBDooooog/dsh-pet-market#v0.1.6
 ```
 
 然后**完全退出 DSH 再启动**（Host 半只在启动时挂载）。这条命令做完三件事：把插件写进 profile 的 `dependencies`、加进 `dsh.profile.bundles`、装好 `node_modules`。
 
-想跟着 `main` 的最新提交走，去掉 `#v0.1.5`：`dsh plugin --profile desktop add github:BBDooooog/dsh-pet-market`。
+想跟着 `main` 的最新提交走，去掉 `#v0.1.6`：`dsh plugin --profile desktop add github:BBDooooog/dsh-pet-market`。
 
 改代码调试用 `link:`：
 
@@ -66,7 +66,7 @@ dsh plugin --profile desktop install
 ## 桌面上的宠物会做什么
 
 - **走路**：待机 3–9 秒，随机朝左或朝右走 1.8–4.2 秒（46 dip/s），撞到屏幕边缘掉头，朝向不对时自动水平镜像（包里的 `renderer.front` 说了算）。
-- **点一下**：切到跑动动作，朝一边窜出去 140–230 px，然后回待机。
+- **点一下**：切到包里 `states.happy` 指向的动作（演示包都指向 `run`）并朝一边窜出去 140–230 px，跑完回待机。
 - **拖动**：按住走哪拖哪，松手记位置（`ui.json`），下次还在那儿。
 - **缩放**：面板上 `− 4x +`，以**底边中点**为锚点原地变大变小，1x–8x；不会把别的宠物挤走。
 - **右键**：固定一项「回窝睡觉」，下面跟「动作」子菜单（包里没有动作就不出现），样式是圆角的浅色小卡片。
